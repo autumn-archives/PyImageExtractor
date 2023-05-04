@@ -37,51 +37,69 @@ class ImageManager:
                         # 失敗しても通知
                         sg.popup(f"{file_p} から抽出に失敗しました。アニメーションgif、png、webpかファイルが壊れていないか確認してください。")
 
-def main():
-    # GUIのレイアウト
-    layout = [
-        # 上部のフレーム
-        [sg.Frame(title="ファイルパスを入力してください",
-            layout=[
-                [sg.Multiline(key="-file_path-", enable_events=True),
-                sg.FileBrowse("開く", key="-browse-")],
-                [sg.Text("保存場所を選択"),
-                sg.Input(key="-save_path-"),
-                sg.FolderBrowse("開く", key="-folder_browse-")]
-            ])],
-        # 下部のフレーム
-        [sg.Frame(title="",
+class GUIView:
+    """GUIに関係するクラス"""
+    def __init__(self):
+        # GUIのレイアウト
+        self.layout = [
+            # 上部のフレーム
+            [sg.Frame(title="ファイルパスを入力してください",
                 layout=[
-                    [sg.Button("抽出", key="-extract-")]
-                ])]
-    ]
-    # ウィンドウを作成
-    window = sg.Window("Image Converter", layout, size=(500, 200))
+                    [sg.Multiline(key="-file_path-", enable_events=True),
+                    sg.FileBrowse("開く", key="-browse-")],
+                    [sg.Text("保存場所を選択"),
+                    sg.Input(key="-save_path-"),
+                    sg.FolderBrowse("開く", key="-folder_browse-")]
+                ])],
+            # 下部のフレーム
+            [sg.Frame(title="",
+                    layout=[
+                        [sg.Button("抽出", key="-extract-")]
+                    ])]
+        ]
+        # ウィンドウを作成
+        self.window = sg.Window("Image Extractor", self.layout, size=(500, 200))
 
-    # イベントループ
-    while True:
-        event, values = window.read()  # イベントを取得
+    def main(self):    
+        # イベントループ
+        while True:
+            event, values = self.window.read()  # イベントを取得
 
-        # ウィンドウを閉じたら終了
-        if event == sg.WINDOW_CLOSED:
-            break
+            # ウィンドウを閉じたら終了
+            if event == sg.WINDOW_CLOSED:
+                break
 
-        # ファイルを選択したら、テキストボックスにパスを表示
-        if event == "-browse-":
-            window["-file_path-"].update(value=values["-browse-"])
+            # ファイルを選択したら、テキストボックスにパスを表示
+            if event == "-browse-":
+                self.window["-file_path-"].update(value=values["-browse-"])
 
-        # 抽出ボタンが押されたら
-        if event == "-extract-":
-            # ファイルパスを取得
-            file_path = values["-file_path-"]
-            # 改行でファイルパスを分けてリストで格納
-            file_path = file_path.splitlines()
-            
+            # 抽出ボタンが押されたら
+            if event == "-extract-":
+                # ファイルパスを取得
+                image_manager.file_path = values["-file_path-"]
+                # 改行でファイルパスを分けてリストで格納
+                image_manager.file_path = image_manager.file_path.splitlines()
+                
+                # 保存場所を取得
+                image_manager.save_path = values["-save_path-"]
+                if image_manager.file_path and image_manager.save_path:  # ファイルパスとファイル形式が指定されている場合
+                    try:
+                        # 抽出用の処理をここで行う
+                        image_manager.image_extractor(image_manager.file_path,image_manager.save_path)
+                    except:
+                        # 失敗したらポップアップで通知
+                        sg.popup("抽出に失敗しました。")
 
-    # ウィンドウを閉じる
-    window.close()
+        # ウィンドウを閉じる
+        self.window.close()
 
 if __name__ == "__main__":
     # イメージ処理用のクラスをインスタンス化
     image_manager = ImageManager()
-    main()
+    # GUIをインスタンス化
+    image_extractor = GUIView()
+    # main実行
+    image_extractor.main()
+        
+
+
