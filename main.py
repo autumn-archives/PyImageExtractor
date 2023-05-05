@@ -82,7 +82,7 @@ class GUIView:
                 
                 # 保存場所を取得
                 image_manager.save_path = values["-save_path-"]
-                if image_manager.file_path and image_manager.save_path:  # ファイルパスとファイル形式が指定されている場合
+                if image_manager.file_path and image_manager.save_path:  # ファイルパスとファイルが指定されている場合
                     try:
                         # 抽出用の処理をここで行う
                         image_manager.image_extractor(image_manager.file_path,image_manager.save_path)
