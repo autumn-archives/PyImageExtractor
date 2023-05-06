@@ -3,7 +3,7 @@
 PyImageExtractorは、PythonとPySimpleGUIQtを使用して作られた便利な画像ダウンローダーです。    
 
 
-![PyImageExtractor](https://user-images.githubusercontent.com/124559210/236595026-78b17fe0-7bb4-43dc-beaa-8119f98a55ff.jpg)
+![PyImageExtractor](https://user-images.githubusercontent.com/124559210/236596102-69ed6a59-1a7b-42a5-87e4-9a1af709becb.jpg)
 
 # 特徴
 アニメーションgifなどのアニメーション画像から、フレームを抽出して1枚ずつ保存できます。    
